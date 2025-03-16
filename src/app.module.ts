@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './auth/auth.module';
 // import { RemindersModule } from './reminders/reminders.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { BirthdaysModule } from './birthdays/birthdays.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRoot(process.env.DB_URI),
     ScheduleModule.forRoot(),
     AuthModule,
+    BirthdaysModule,
     // RemindersModule,
   ],
   controllers: [],

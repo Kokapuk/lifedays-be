@@ -11,9 +11,9 @@ export class User {
   @Prop({
     type: String,
     required: true,
-    minLength: LOGIN_VALIDATION.MIN_LENGTH,
-    maxLength: LOGIN_VALIDATION.MAX_LENGTH,
-    validate: LOGIN_VALIDATION.REGEX,
+    minLength: LOGIN_VALIDATION.minLength,
+    maxLength: LOGIN_VALIDATION.maxLength,
+    validate: LOGIN_VALIDATION.regex,
   })
   login: string;
 

@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { isNotEmptyValidationMessage } from 'src/users/validation.constants';
+import { isNotEmptyValidationMessage } from 'src/validation.constants';
 
 export class SignInDto {
   @IsNotEmpty({ message: isNotEmptyValidationMessage })
