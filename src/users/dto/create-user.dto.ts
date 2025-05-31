@@ -3,7 +3,7 @@ import {
   isNotEmptyValidationMessage,
   maxLengthValidationMessage,
   minLengthValidationMessage,
-} from 'src/validation.constants';
+} from 'src/utils/validation.constants';
 import { LOGIN_VALIDATION, PASSWORD_VALIDATION } from '../validation.constants';
 
 export class CreateUserDto {

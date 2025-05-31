@@ -11,3 +11,9 @@ export const maxLengthValidationMessage = (args: ValidationArguments) =>
 
 export const isMongoIdValidationMessage = (args: ValidationArguments) =>
   `${args.property} is not valid mongo id`;
+
+export const isDateValidationMessage = (args: ValidationArguments) =>
+  `${args.property} is invalid date`;
+
+export const minDateValidationMessage = (args: ValidationArguments) =>
+  `${args.property} is invalid date`;
