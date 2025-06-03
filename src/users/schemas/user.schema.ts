@@ -20,11 +20,12 @@ export class User {
   @Prop({
     type: String,
     required: true,
+    select: false,
   })
-  password: string;
+  password?: string;
 
   @Prop({ type: String })
-  telegramUserId: string;
+  telegramUserId?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

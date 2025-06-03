@@ -1,12 +1,17 @@
-import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import {
+  Inject,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectModel } from '@nestjs/mongoose';
+import * as dayjs from 'dayjs';
 import { Model } from 'mongoose';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './schemas/event.schema';
-
-@Injectable({ scope: Scope.REQUEST })
+import getClosestRepeatDate from './utils/getClosestRepeatDate';
+import { isISODateString } from './utils/validation.constants';
 export class EventsService {
   constructor(
     @Inject(REQUEST) private readonly request: Request,
@@ -22,10 +27,47 @@ export class EventsService {
     return event.save();
   }
 
-  findAll() {
-    return this.eventModel
+  async find(dateRange: string) {
+    const [dateStart, dateEnd] = dateRange.split(';');
+
+    if (
+      !dateStart ||
+      !dateEnd ||
+      !isISODateString(dateStart) ||
+      !isISODateString(dateEnd)
+    ) {
+      throw new UnprocessableEntityException(
+        undefined,
+        'Invalid date range provided, expected "{start date in ISO format};{end date in ISO format}"',
+      );
+    }
+
+    const dayEnd = dayjs(dateEnd);
+    const result: Record<string, Event[]> = {};
+
+    const events = await this.eventModel
       .find({ owner: this.request['user'].sub })
       .sort({ date: 'ascending' });
+
+    for (
+      let day = dayjs(dateStart);
+      day.isBefore(dayEnd, 'd') || day.isSame(dayEnd, 'd');
+      day = day.add(1, 'd')
+    ) {
+      const eventsRepeatRelativeToThisDay = events.map((i) => ({
+        ...i.toObject(),
+        date: getClosestRepeatDate(i.date, i.repeat, day.toDate()),
+      }));
+      const thisDayEvents = eventsRepeatRelativeToThisDay.filter((i) =>
+        dayjs(i.date).isSame(day, 'd'),
+      );
+
+      if (thisDayEvents.length) {
+        result[day.toISOString()] = thisDayEvents;
+      }
+    }
+
+    return result;
   }
 
   async update(id: string, dto: UpdateEventDto) {

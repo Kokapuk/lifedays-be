@@ -29,7 +29,7 @@ export class UsersService {
   }
 
   async findOne(login: string) {
-    const user = await this.userModel.findOne({ login });
+    const user = await this.userModel.findOne({ login }).select('+password');
 
     if (!user) {
       throw new NotFoundException(undefined, 'User was not found');

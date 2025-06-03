@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { EventsService } from './events.service';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { EventsService } from './events.service';
 
 @Controller('events')
 export class EventsController {
@@ -13,8 +21,8 @@ export class EventsController {
   }
 
   @Get('/')
-  findAll() {
-    return this.eventsService.findAll();
+  find(@Query('dateRange') dateRange: string) {
+    return this.eventsService.find(dateRange);
   }
 
   @Patch(':id')

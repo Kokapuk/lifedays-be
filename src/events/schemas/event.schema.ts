@@ -12,7 +12,6 @@ export enum EventRepeat {
   NEVER = 'never',
   DAILY = 'daily',
   WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
   ANNUALLY = 'annually',
 }
 
@@ -33,7 +32,7 @@ export class Event {
     minLength: DESCRIPTION_VALIDATION.minLength,
     maxLength: DESCRIPTION_VALIDATION.maxLength,
   })
-  description: string;
+  description?: string;
 
   @Prop({
     type: Date,
@@ -53,7 +52,7 @@ export class Event {
     ref: 'User',
     select: false,
   })
-  owner: User;
+  owner?: User;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
