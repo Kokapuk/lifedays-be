@@ -28,6 +28,13 @@ export class EventsService {
   }
 
   async find(dateRange: string) {
+    if (!dateRange) {
+      throw new UnprocessableEntityException(
+        undefined,
+        '"dateRange" search param is required',
+      );
+    }
+
     const [dateStart, dateEnd] = dateRange.split(';');
 
     if (

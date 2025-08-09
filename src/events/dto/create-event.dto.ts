@@ -2,6 +2,7 @@ import { Transform } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
+  IsHexColor,
   IsNotEmpty,
   IsOptional,
   MaxLength,
@@ -45,6 +46,10 @@ export class CreateEventDto {
   @Transform(({ value }) => new Date(value))
   @IsNotEmpty({ message: isNotEmptyValidationMessage })
   date: Date;
+
+  @IsHexColor()
+  @IsNotEmpty({ message: isNotEmptyValidationMessage })
+  color: string;
 
   @IsEnum(EventRepeat)
   @IsNotEmpty({ message: isNotEmptyValidationMessage })

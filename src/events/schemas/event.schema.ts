@@ -47,6 +47,12 @@ export class Event {
   repeat: EventRepeat;
 
   @Prop({
+    required: true,
+    type: String,
+  })
+  color: string;
+
+  @Prop({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'User',

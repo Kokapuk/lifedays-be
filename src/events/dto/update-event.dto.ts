@@ -2,6 +2,7 @@ import { Transform } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
+  IsHexColor,
   IsOptional,
   MaxLength,
   MinDate,
@@ -28,7 +29,7 @@ export class UpdateEventDto {
     message: minLengthValidationMessage,
   })
   @IsOptional()
-  title: string;
+  title?: string;
 
   @MaxLength(DESCRIPTION_VALIDATION.maxLength, {
     message: maxLengthValidationMessage,
@@ -37,15 +38,19 @@ export class UpdateEventDto {
     message: minLengthValidationMessage,
   })
   @IsOptional()
-  description: string;
+  description?: string;
 
   @MinDate(new Date(), { message: minDateValidationMessage })
   @IsDate({ message: isDateValidationMessage })
   @Transform(({ value }) => value && new Date(value))
   @IsOptional()
-  date: Date;
+  date?: Date;
+
+  @IsHexColor()
+  @IsOptional()
+  color?: string;
 
   @IsEnum(EventRepeat)
   @IsOptional({ message: isNotEmptyValidationMessage })
-  repeat: EventRepeat;
+  repeat?: EventRepeat;
 }
